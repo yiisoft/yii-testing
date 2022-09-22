@@ -11,6 +11,7 @@ use Throwable;
 use Yiisoft\Config\ConfigInterface;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
+use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Yii\Http\Application;
 use Yiisoft\Yii\Http\Handler\ThrowableHandler;
@@ -19,9 +20,13 @@ use Yiisoft\Yii\Runner\Http\ServerRequestFactory;
 
 final class TestApplicationRunner extends ApplicationRunner
 {
-    private array $requestParameters;
+    private array $requestParameters = [];
     public ?ContainerInterface $container = null;
+    /**
+     * @var ServiceProviderInterface[]
+     */
     private array $providers = [];
+    protected string $definitionEnvironment;
 
     /**
      * @param string $rootPath The absolute path to the project root.
@@ -33,11 +38,12 @@ final class TestApplicationRunner extends ApplicationRunner
         string $rootPath,
         bool $debug,
         ?string $environment,
-        protected ?string $applicationEnvironment,
+        string $definitionEnvironment = 'web',
     ) {
         parent::__construct($rootPath, $debug, $environment);
         $this->bootstrapGroup = 'bootstrap-web';
         $this->eventsGroup = 'events-web';
+        $this->definitionEnvironment = $definitionEnvironment;
     }
 
     /**
@@ -47,35 +53,41 @@ final class TestApplicationRunner extends ApplicationRunner
     {
         $this->preloadContainer();
 
+        /** @var ContainerInterface $container */
+        $container = $this->container;
+
         /** @var Application $application */
-        $application = $this->container->get(Application::class);
+        $application = $container->get(Application::class);
 
         /**
          * @var ServerRequestInterface
          * @psalm-suppress MixedMethodCall
          */
-        $serverRequest = $this->container
+        $serverRequest = $container
             ->get(ServerRequestFactory::class)
             ->createFromParameters(
                 ...$this->requestParameters,
             );
 
+        /**
+         * @var ResponseInterface|null $response
+         */
+        $response = null;
         try {
             $application->start();
             $response = $application->handle($serverRequest);
         } catch (Throwable $throwable) {
             $handler = new ThrowableHandler($throwable);
             /**
-             * @var ResponseInterface
              * @psalm-suppress MixedMethodCall
              */
-            $response = $this->container
+            $response = $container
                 ->get(ErrorCatcher::class)
                 ->process($serverRequest, $handler);
         } finally {
             $application->afterEmit($response ?? null);
             $application->shutdown();
-            $this->responseGrabber->setResponse($response ?? null);
+            $this->responseGrabber->setResponse($response);
         }
     }
 
@@ -86,7 +98,7 @@ final class TestApplicationRunner extends ApplicationRunner
         array $postParams = [],
         mixed $body = null,
         array $files = [],
-    ) {
+    ): void {
         $this->requestParameters = [
             'server' => [
                 'SCRIPT_NAME' => '/index.php',
@@ -103,12 +115,15 @@ final class TestApplicationRunner extends ApplicationRunner
         ];
     }
 
-    public function preloadContainer()
+    public function preloadContainer(): void
     {
+        /**
+         * @psalm-suppress UnresolvableInclude
+         */
         require_once $this->rootPath . '/autoload.php';
 
         $config = $this->getConfig();
-        $this->container = $this->getContainer($config, $this->applicationEnvironment);
+        $this->container = $this->getContainer($config, $this->definitionEnvironment);
 
         $this->runBootstrap($config, $this->container);
         $this->checkEvents($config, $this->container);
@@ -151,7 +166,10 @@ final class TestApplicationRunner extends ApplicationRunner
         return new Container($containerConfig);
     }
 
-    public function addProviders(array $providers)
+    /**
+     * @param ServiceProviderInterface[] $providers
+     */
+    public function addProviders(array $providers): void
     {
         $this->providers = array_merge($this->providers, $providers);
     }

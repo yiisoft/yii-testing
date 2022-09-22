@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Testing;
 
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -19,7 +20,7 @@ final class FunctionalTester
         $this->mockServiceProvider->addDefinition($id, $definition);
     }
 
-    public function bootstrapApplication(string $applicationEnvironment = 'web'): void
+    public function bootstrapApplication(string $definitionEnvironment = 'web'): void
     {
         if ($this->application !== null) {
             return;
@@ -30,7 +31,7 @@ final class FunctionalTester
             dirname(__DIR__, 2),
             false,
             null,
-            $applicationEnvironment
+            $definitionEnvironment
         );
         $this->mockServiceProvider ??= new MockServiceProvider();
         $this->application->addProviders([$this->mockServiceProvider]);
@@ -40,19 +41,24 @@ final class FunctionalTester
     {
         $this->ensureApplicationLoaded();
 
-        $this->application->withRequest($method, $url);
-        $this->application->run();
+        $this->application?->withRequest($method, $url);
+        $this->application?->run();
 
-        return $this->application->responseGrabber->getResponse();
+        return $this->application?->responseGrabber?->getResponse() ?? throw new RuntimeException('Either $application or $response is null');
     }
 
+    /**
+     * @psalm-return ContainerInterface
+     * @return ContainerInterface
+     * @psalm-suppress NullableReturnStatement
+     */
     public function getContainer(): ContainerInterface
     {
         $this->ensureApplicationLoaded();
 
-        $this->application->preloadContainer();
+        $this->application?->preloadContainer();
 
-        return $this->application->container;
+        return $this->application->container ?? throw new Exception('Container was not set.');
     }
 
     private function ensureApplicationLoaded(): void
