@@ -20,15 +20,19 @@ final class FunctionalTester
         $this->mockServiceProvider->addDefinition($id, $definition);
     }
 
-    public function bootstrapApplication(string $definitionEnvironment = 'web'): void
+    public function bootstrapApplication(string $definitionEnvironment = 'web', ?string $projectRootPath = null): void
     {
         if ($this->application !== null) {
             return;
         }
 
+        if ($projectRootPath === null) {
+            $projectRootPath = dirname(__DIR__, 5);
+        }
+
         $this->application = new TestApplicationRunner(
             new ResponseGrabber(),
-            dirname(__DIR__, 2),
+            $projectRootPath,
             false,
             null,
             $definitionEnvironment

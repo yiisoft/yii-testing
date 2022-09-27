@@ -23,9 +23,9 @@ abstract class FunctionalTestCase extends TestCase
         $this->tester?->mockService($id, $definition);
     }
 
-    protected function bootstrapApplication(string $definitionEnvironment = 'web'): void
+    protected function bootstrapApplication(string $definitionEnvironment = 'web', ?string $projectRootPath = null): void
     {
-        $this->tester?->bootstrapApplication($definitionEnvironment);
+        $this->tester?->bootstrapApplication($definitionEnvironment, $projectRootPath);
     }
 
     protected function doRequest(string $method, string $url): ResponseInterface
