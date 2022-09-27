@@ -26,7 +26,6 @@ final class TestApplicationRunner extends ApplicationRunner
      * @var ServiceProviderInterface[]
      */
     private array $providers = [];
-    protected string $definitionEnvironment;
 
     /**
      * @param string $rootPath The absolute path to the project root.
@@ -38,12 +37,11 @@ final class TestApplicationRunner extends ApplicationRunner
         string $rootPath,
         bool $debug,
         ?string $environment,
-        string $definitionEnvironment = 'web',
+        protected string $definitionEnvironment = 'web',
     ) {
         parent::__construct($rootPath, $debug, $environment);
         $this->bootstrapGroup = 'bootstrap-web';
         $this->eventsGroup = 'events-web';
-        $this->definitionEnvironment = $definitionEnvironment;
     }
 
     /**
