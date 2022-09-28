@@ -52,8 +52,6 @@ final class FunctionalTester
     }
 
     /**
-     * @psalm-return ContainerInterface
-     * @return ContainerInterface
      * @psalm-suppress NullableReturnStatement
      */
     public function getContainer(): ContainerInterface
