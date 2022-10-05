@@ -9,17 +9,17 @@ use RuntimeException;
 
 final class ResponseGrabber
 {
-    private ?ResponseInterface $response = null;
+    private ?ResponseAccessor $response = null;
 
-    public function getResponse(): ResponseInterface
+    public function getResponse(): ResponseAccessor
     {
         return $this->response !== null
-            ? new ResponseAccessor($this->response)
+            ? $this->response
             : throw new RuntimeException('Response is null');
     }
 
     public function setResponse(?ResponseInterface $response): void
     {
-        $this->response = $response;
+        $this->response = $response === null ? null : new ResponseAccessor($response);
     }
 }

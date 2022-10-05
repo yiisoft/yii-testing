@@ -31,7 +31,7 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getProtocolVersion();
     }
 
-    public function withProtocolVersion($version): self
+    public function withProtocolVersion($version): ResponseAccessor
     {
         $response = $this->response->withProtocolVersion($version);
         return new self($response);
@@ -57,19 +57,19 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getHeaderLine($name);
     }
 
-    public function withHeader($name, $value): self
+    public function withHeader($name, $value): ResponseAccessor
     {
         $response = $this->response->withHeader($name, $value);
         return new self($response);
     }
 
-    public function withAddedHeader($name, $value): self
+    public function withAddedHeader($name, $value): ResponseAccessor
     {
         $response = $this->response->withAddedHeader($name, $value);
         return new self($response);
     }
 
-    public function withoutHeader($name): self
+    public function withoutHeader($name): ResponseAccessor
     {
         $response = $this->response->withoutHeader($name);
         return new self($response);
@@ -80,7 +80,7 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getBody();
     }
 
-    public function withBody(StreamInterface $body): self
+    public function withBody(StreamInterface $body): ResponseAccessor
     {
         $response = $this->response->withBody($body);
         return new self($response);
@@ -91,7 +91,7 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getStatusCode();
     }
 
-    public function withStatus($code, $reasonPhrase = ''): self
+    public function withStatus($code, $reasonPhrase = ''): ResponseAccessor
     {
         $response = $this->response->withStatus($code, $reasonPhrase);
         return new self($response);

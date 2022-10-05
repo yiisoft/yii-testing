@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Testing;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class FunctionalTestCase extends TestCase
 {
@@ -28,7 +27,7 @@ abstract class FunctionalTestCase extends TestCase
         $this->tester?->bootstrapApplication($definitionEnvironment, $projectRootPath);
     }
 
-    protected function doRequest(string $method, string $url): ResponseInterface
+    protected function doRequest(string $method, string $url): ResponseAccessor
     {
         return $this->tester?->doRequest($method, $url) ?? throw new Exception('Either $tester or $response is null');
     }
