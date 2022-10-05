@@ -95,6 +95,8 @@ final class TestApplicationRunner extends ApplicationRunner
         array $queryParams = [],
         array $postParams = [],
         mixed $body = null,
+        array $headers = [],
+        array $cookies = [],
         array $files = [],
     ): void {
         $this->requestParameters = [
@@ -104,8 +106,8 @@ final class TestApplicationRunner extends ApplicationRunner
                 'SERVER_PROTOCOL' => '1.1',
                 'REQUEST_URI' => $url,
             ],
-            'headers' => [],
-            'cookies' => [],
+            'headers' => $headers,
+            'cookies' => $cookies,
             'get' => $queryParams,
             'post' => $postParams,
             'files' => $files,
