@@ -31,6 +31,11 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getProtocolVersion();
     }
 
+    /**
+     * @param string $version
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withProtocolVersion($version): ResponseAccessor
     {
         $response = $this->response->withProtocolVersion($version);
@@ -57,18 +62,35 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getHeaderLine($name);
     }
 
+    /**
+     * @param string $name
+     * @param string|string[] $value
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withHeader($name, $value): ResponseAccessor
     {
         $response = $this->response->withHeader($name, $value);
         return new self($response);
     }
 
+    /**
+     * @param string $name
+     * @param string|string[] $value
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withAddedHeader($name, $value): ResponseAccessor
     {
         $response = $this->response->withAddedHeader($name, $value);
         return new self($response);
     }
 
+    /**
+     * @param string $name
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withoutHeader($name): ResponseAccessor
     {
         $response = $this->response->withoutHeader($name);
@@ -80,6 +102,11 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getBody();
     }
 
+    /**
+     * @param StreamInterface $body
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withBody(StreamInterface $body): ResponseAccessor
     {
         $response = $this->response->withBody($body);
@@ -91,9 +118,16 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getStatusCode();
     }
 
+    /**
+     * @param int $code
+     * @param string $reasonPhrase
+     * @return ResponseAccessor
+     * @psalm-suppress LessSpecificReturnStatement
+     */
     public function withStatus($code, $reasonPhrase = ''): ResponseAccessor
     {
         $response = $this->response->withStatus($code, $reasonPhrase);
+
         return new self($response);
     }
 
