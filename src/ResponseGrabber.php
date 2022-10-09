@@ -7,17 +7,19 @@ namespace Yiisoft\Yii\Testing;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-class ResponseGrabber
+final class ResponseGrabber
 {
-    private ?ResponseInterface $response = null;
+    private ?ResponseAccessor $response = null;
 
-    public function getResponse(): ResponseInterface
+    public function getResponse(): ResponseAccessor
     {
-        return $this->response ?? throw new RuntimeException('Response is null');
+        return $this->response !== null
+            ? $this->response
+            : throw new RuntimeException('Response is null');
     }
 
     public function setResponse(?ResponseInterface $response): void
     {
-        $this->response = $response;
+        $this->response = $response === null ? null : new ResponseAccessor($response);
     }
 }

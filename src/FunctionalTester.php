@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Testing;
 
 use Exception;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
 final class FunctionalTester
@@ -41,7 +40,7 @@ final class FunctionalTester
         $this->application->addProviders([$this->mockServiceProvider]);
     }
 
-    public function doRequest(string $method, string $url): ResponseInterface
+    public function doRequest(string $method, string $url): ResponseAccessor
     {
         $this->ensureApplicationLoaded();
 
