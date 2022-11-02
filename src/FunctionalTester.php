@@ -39,7 +39,7 @@ final class FunctionalTester
             new ResponseGrabber(),
             $projectRootPath,
             false,
-            null,
+            $_ENV['YII_ENV'],
             $definitionEnvironment
         );
         $this->application->addProviders([$this->getMockServiceProvider()]);
