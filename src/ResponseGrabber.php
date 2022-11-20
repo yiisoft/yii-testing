@@ -13,9 +13,7 @@ final class ResponseGrabber
 
     public function getResponse(): ResponseAccessor
     {
-        return $this->response !== null
-            ? $this->response
-            : throw new RuntimeException('Response is null');
+        return $this->response ?? throw new RuntimeException('Response is null');
     }
 
     public function setResponse(?ResponseInterface $response): void

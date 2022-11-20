@@ -33,7 +33,6 @@ final class ResponseAccessor implements ResponseInterface
 
     /**
      * @param string $version
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withProtocolVersion($version): ResponseAccessor
@@ -65,7 +64,6 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @param string $name
      * @param string|string[] $value
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withHeader($name, $value): ResponseAccessor
@@ -77,7 +75,6 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @param string $name
      * @param string|string[] $value
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withAddedHeader($name, $value): ResponseAccessor
@@ -88,7 +85,6 @@ final class ResponseAccessor implements ResponseInterface
 
     /**
      * @param string $name
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withoutHeader($name): ResponseAccessor
@@ -103,8 +99,6 @@ final class ResponseAccessor implements ResponseInterface
     }
 
     /**
-     * @param StreamInterface $body
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withBody(StreamInterface $body): ResponseAccessor
@@ -121,7 +115,6 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @param int $code
      * @param string $reasonPhrase
-     * @return ResponseAccessor
      * @psalm-suppress LessSpecificReturnStatement
      */
     public function withStatus($code, $reasonPhrase = ''): ResponseAccessor
