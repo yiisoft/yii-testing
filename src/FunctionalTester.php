@@ -22,7 +22,7 @@ final class FunctionalTester
 
     public function mockService(string $id, mixed $definition): void
     {
-        $this->getMockServiceProvider()->addDefinition($id, $definition);
+        $this->getMockServiceProvider()->setDefinition($id, $definition);
     }
 
     public function bootstrapApplication(string $definitionEnvironment = 'web', ?string $projectRootPath = null): void
@@ -91,7 +91,7 @@ final class FunctionalTester
     {
         foreach ($this->defaultMocks as $key => $value) {
             if (interface_exists($key) || class_exists($key)) {
-                $mockServiceProvider->addDefinition($key, $value);
+                $mockServiceProvider->setDefinition($key, $value);
             }
         }
     }

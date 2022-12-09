@@ -21,7 +21,7 @@ final class MockServiceProvider implements ServiceProviderInterface
         return $this->extensions;
     }
 
-    public function addDefinition(string $id, mixed $definition): void
+    public function setDefinition(string $id, mixed $definition): void
     {
         $this->definitions[$id] = $definition;
     }
