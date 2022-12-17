@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Testing\Tests;
 
-use GuzzleHttp\Psr7\Stream;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
@@ -23,7 +22,7 @@ class ResponseAccessorTest extends TestCase
     {
         [$response, $accessor] = $this->createResponseAndAccessor();
 
-        $this->assertEquals(["key" => "value"], $accessor->getContentAsJson());
+        $this->assertEquals(['key' => 'value'], $accessor->getContentAsJson());
     }
 
     public function testGetProtocolVersion(): void

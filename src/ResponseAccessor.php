@@ -35,7 +35,7 @@ final class ResponseAccessor implements ResponseInterface
      * @param string $version
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withProtocolVersion($version): ResponseAccessor
+    public function withProtocolVersion($version): self
     {
         $response = $this->response->withProtocolVersion($version);
         return new self($response);
@@ -66,7 +66,7 @@ final class ResponseAccessor implements ResponseInterface
      * @param string|string[] $value
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withHeader($name, $value): ResponseAccessor
+    public function withHeader($name, $value): self
     {
         $response = $this->response->withHeader($name, $value);
         return new self($response);
@@ -77,7 +77,7 @@ final class ResponseAccessor implements ResponseInterface
      * @param string|string[] $value
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withAddedHeader($name, $value): ResponseAccessor
+    public function withAddedHeader($name, $value): self
     {
         $response = $this->response->withAddedHeader($name, $value);
         return new self($response);
@@ -87,7 +87,7 @@ final class ResponseAccessor implements ResponseInterface
      * @param string $name
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withoutHeader($name): ResponseAccessor
+    public function withoutHeader($name): self
     {
         $response = $this->response->withoutHeader($name);
         return new self($response);
@@ -101,7 +101,7 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withBody(StreamInterface $body): ResponseAccessor
+    public function withBody(StreamInterface $body): self
     {
         $response = $this->response->withBody($body);
         return new self($response);
@@ -117,7 +117,7 @@ final class ResponseAccessor implements ResponseInterface
      * @param string $reasonPhrase
      * @psalm-suppress LessSpecificReturnStatement
      */
-    public function withStatus($code, $reasonPhrase = ''): ResponseAccessor
+    public function withStatus($code, $reasonPhrase = ''): self
     {
         $response = $this->response->withStatus($code, $reasonPhrase);
 
