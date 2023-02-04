@@ -22,9 +22,9 @@ abstract class FunctionalTestCase extends TestCase
         $this->tester?->mockService($id, $definition);
     }
 
-    protected function bootstrapApplication(string $definitionEnvironment = 'web', ?string $projectRootPath = null): void
+    protected function bootstrapApplication(?string $projectRootPath = null): void
     {
-        $this->tester?->bootstrapApplication($definitionEnvironment, $projectRootPath);
+        $this->tester?->bootstrapApplication($projectRootPath);
     }
 
     protected function doRequest(string $method, string $url): ResponseAccessor

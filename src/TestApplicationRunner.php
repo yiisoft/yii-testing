@@ -30,18 +30,54 @@ final class TestApplicationRunner extends ApplicationRunner
     /**
      * @param string $rootPath The absolute path to the project root.
      * @param bool $debug Whether the debug mode is enabled.
+     * @param bool $checkEvents Whether to check events' configuration.
      * @param string|null $environment The environment name.
+     * @param string $bootstrapGroup The bootstrap configuration group name.
+     * @param string $eventsGroup The events' configuration group name.
+     * @param string $diGroup The container definitions' configuration group name.
+     * @param string $diProvidersGroup The container providers' configuration group name.
+     * @param string $diDelegatesGroup The container delegates' configuration group name.
+     * @param string $diTagsGroup The container tags' configuration group name.
+     * @param string $paramsGroup The configuration parameters group name.
+     * @param array $nestedParamsGroups Configuration group names that included into configuration parameters group.
+     * This is needed for recursive merging of parameters.
+     * @param array $nestedEventsGroups Configuration group names that included into events' configuration group. This
+     * is needed for reverse and recursive merge of events' configurations.
+     *
+     * @psalm-param list<string> $nestedParamsGroups
+     * @psalm-param list<string> $nestedEventsGroups
      */
     public function __construct(
         public ResponseGrabber $responseGrabber,
         string $rootPath,
-        bool $debug,
-        ?string $environment,
-        protected string $definitionEnvironment = 'web',
+        bool $debug = false,
+        bool $checkEvents = false,
+        ?string $environment = null,
+        string $bootstrapGroup = 'bootstrap-web',
+        string $eventsGroup = 'events-web',
+        string $diGroup = 'di-web',
+        string $diProvidersGroup = 'di-providers-web',
+        string $diDelegatesGroup = 'di-delegates-web',
+        string $diTagsGroup = 'di-tags-web',
+        string $paramsGroup = 'params-web',
+        array $nestedParamsGroups = ['params'],
+        array $nestedEventsGroups = ['events'],
     ) {
-        parent::__construct($rootPath, $debug, $environment);
-        $this->bootstrapGroup = 'bootstrap-web';
-        $this->eventsGroup = 'events-web';
+        parent::__construct(
+            $rootPath,
+            $debug,
+            $checkEvents,
+            $environment,
+            $bootstrapGroup,
+            $eventsGroup,
+            $diGroup,
+            $diProvidersGroup,
+            $diDelegatesGroup,
+            $diTagsGroup,
+            $paramsGroup,
+            $nestedParamsGroups,
+            $nestedEventsGroups,
+        );
     }
 
     /**
@@ -122,48 +158,10 @@ final class TestApplicationRunner extends ApplicationRunner
          */
         require_once $this->rootPath . '/autoload.php';
 
-        $config = $this->getConfig();
-        $this->container = $this->getContainer($config, $this->definitionEnvironment);
+        $this->container = $this->getContainer();
 
-        $this->runBootstrap($config, $this->container);
-        $this->checkEvents($config, $this->container);
-    }
-
-    protected function createDefaultContainer(ConfigInterface $config, string $definitionEnvironment): Container
-    {
-        $containerConfig = ContainerConfig::create()->withValidate($this->debug);
-
-        if ($config->has($definitionEnvironment)) {
-            $containerConfig = $containerConfig->withDefinitions($config->get($definitionEnvironment));
-        }
-
-        $providers = [];
-
-        if ($config->has("providers-$definitionEnvironment")) {
-            $providers = $config->get("providers-$definitionEnvironment");
-        }
-
-        if ($this->providers !== []) {
-            $providers = array_merge($providers, $this->providers);
-        }
-
-        if ($providers !== []) {
-            $containerConfig = $containerConfig->withProviders($providers);
-        }
-
-        if ($config->has("delegates-$definitionEnvironment")) {
-            $containerConfig = $containerConfig->withDelegates($config->get("delegates-$definitionEnvironment"));
-        }
-
-        if ($config->has("tags-$definitionEnvironment")) {
-            $containerConfig = $containerConfig->withTags($config->get("tags-$definitionEnvironment"));
-        }
-
-        $containerConfig = $containerConfig->withDefinitions(
-            array_merge($containerConfig->getDefinitions(), [ConfigInterface::class => $config])
-        );
-
-        return new Container($containerConfig);
+        $this->runBootstrap();
+        $this->checkEvents();
     }
 
     /**
