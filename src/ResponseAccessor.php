@@ -98,6 +98,9 @@ final class ResponseAccessor implements ResponseInterface
         return $this->response->getBody();
     }
 
+    /**
+     * @psalm-suppress MoreSpecificReturnType,LessSpecificReturnStatement It's false-positive errors in Psalm <= 4.30
+     */
     public function withBody(StreamInterface $body): self
     {
         return $this->withResponse(
