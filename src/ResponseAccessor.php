@@ -33,12 +33,12 @@ final class ResponseAccessor implements ResponseInterface
 
     /**
      * @param string $version
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function withProtocolVersion($version): self
     {
-        $response = $this->response->withProtocolVersion($version);
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withProtocolVersion($version)
+        );
     }
 
     public function getHeaders(): array
@@ -64,33 +64,33 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @param string $name
      * @param string|string[] $value
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function withHeader($name, $value): self
     {
-        $response = $this->response->withHeader($name, $value);
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withHeader($name, $value)
+        );
     }
 
     /**
      * @param string $name
      * @param string|string[] $value
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function withAddedHeader($name, $value): self
     {
-        $response = $this->response->withAddedHeader($name, $value);
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withAddedHeader($name, $value)
+        );
     }
 
     /**
      * @param string $name
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function withoutHeader($name): self
     {
-        $response = $this->response->withoutHeader($name);
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withoutHeader($name)
+        );
     }
 
     public function getBody(): StreamInterface
@@ -99,12 +99,13 @@ final class ResponseAccessor implements ResponseInterface
     }
 
     /**
-     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType,LessSpecificReturnStatement It's false-positive errors in Psalm <= 4.30
      */
     public function withBody(StreamInterface $body): self
     {
-        $response = $this->response->withBody($body);
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withBody($body)
+        );
     }
 
     public function getStatusCode(): int
@@ -115,13 +116,12 @@ final class ResponseAccessor implements ResponseInterface
     /**
      * @param int $code
      * @param string $reasonPhrase
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function withStatus($code, $reasonPhrase = ''): self
     {
-        $response = $this->response->withStatus($code, $reasonPhrase);
-
-        return new self($response);
+        return $this->withResponse(
+            $this->response->withStatus($code, $reasonPhrase)
+        );
     }
 
     public function getReasonPhrase(): string
@@ -132,5 +132,12 @@ final class ResponseAccessor implements ResponseInterface
     public function getResponse(): ResponseInterface
     {
         return $this->response;
+    }
+
+    private function withResponse(ResponseInterface $response): self
+    {
+        $new = clone $this;
+        $new->response = $response;
+        return $new;
     }
 }
