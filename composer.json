@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0",
         "psr/container": "^2.0",
         "psr/http-message": "^1.0",
         "yiisoft/config": "^1.1",
