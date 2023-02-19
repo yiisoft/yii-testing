@@ -60,13 +60,7 @@
     },
     "extra": {
         "config-plugin-options": {
-            "source-directory": "config"
-        },
-        "config-plugin": {
-            "common": "common.php",
-            "console": "console.php",
-            "params": "params.php",
-            "web": "web.php"
+            "build-merge-plan": false
         }
     },
     "config": {
