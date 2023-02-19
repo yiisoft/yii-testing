@@ -25,7 +25,7 @@ final class FunctionalTester
         $this->getMockServiceProvider()->setDefinition($id, $definition);
     }
 
-    public function bootstrapApplication(string $definitionEnvironment = 'web', ?string $projectRootPath = null): void
+    public function bootstrapApplication(?string $projectRootPath = null): void
     {
         if ($this->application !== null) {
             return;
@@ -36,11 +36,11 @@ final class FunctionalTester
         }
 
         $this->application = new TestApplicationRunner(
-            new ResponseGrabber(),
-            $projectRootPath,
-            false,
-            $_ENV['YII_ENV'] ?? null,
-            $definitionEnvironment
+            responseGrabber: new ResponseGrabber(),
+            rootPath: $projectRootPath,
+            debug: false,
+            checkEvents: false,
+            environment: $_ENV['YII_ENV'] ?? null,
         );
         $this->application->addProviders([$this->getMockServiceProvider()]);
     }
