@@ -8,7 +8,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
+use Yiisoft\Config\ConfigInterface;
 use Yiisoft\Di\Container;
+use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Yii\Http\Application;
@@ -156,7 +158,7 @@ final class TestApplicationRunner extends ApplicationRunner
          */
         require_once $this->rootPath . '/autoload.php';
 
-        $this->container = $this->getContainer();
+        $this->container = $this->createContainer();
 
         $this->runBootstrap();
         $this->checkEvents();
@@ -168,5 +170,37 @@ final class TestApplicationRunner extends ApplicationRunner
     public function addProviders(array $providers): void
     {
         $this->providers = array_merge($this->providers, $providers);
+    }
+
+    private function createContainer(): Container
+    {
+        $containerConfig = ContainerConfig::create()->withValidate($this->debug);
+
+        $config = $this->getConfig();
+
+        if (null !== $definitions = $this->getConfiguration($this->diGroup)) {
+            $containerConfig = $containerConfig->withDefinitions($definitions);
+        }
+
+        if (null !== $providers = $this->getConfiguration($this->diProvidersGroup)) {
+            $providers = array_merge($providers, $this->providers);
+        } else {
+            $providers = $this->providers;
+        }
+        $containerConfig = $containerConfig->withProviders($providers);
+
+        if (null !== $delegates = $this->getConfiguration($this->diDelegatesGroup)) {
+            $containerConfig = $containerConfig->withDelegates($delegates);
+        }
+
+        if (null !== $tags = $this->getConfiguration($this->diTagsGroup)) {
+            $containerConfig = $containerConfig->withTags($tags);
+        }
+
+        $containerConfig = $containerConfig->withDefinitions(
+            array_merge($containerConfig->getDefinitions(), [ConfigInterface::class => $config])
+        );
+
+        return new Container($containerConfig);
     }
 }
