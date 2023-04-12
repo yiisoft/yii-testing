@@ -12,6 +12,7 @@ use Yiisoft\Config\ConfigInterface;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Di\ServiceProviderInterface;
+use Yiisoft\ErrorHandler\ErrorHandler;
 use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Yii\Http\Application;
 use Yiisoft\Yii\Http\Handler\ThrowableHandler;
@@ -89,6 +90,12 @@ final class TestApplicationRunner extends ApplicationRunner
 
         /** @var ContainerInterface $container */
         $container = $this->container;
+
+        $errorHandler = $container->get(ErrorHandler::class);
+        if ($this->debug) {
+            $errorHandler->debug();
+        }
+        $errorHandler->register();
 
         /** @var Application $application */
         $application = $container->get(Application::class);

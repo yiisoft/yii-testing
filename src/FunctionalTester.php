@@ -38,7 +38,7 @@ final class FunctionalTester
         $this->application = new TestApplicationRunner(
             responseGrabber: new ResponseGrabber(),
             rootPath: $projectRootPath,
-            debug: false,
+            debug: (bool)$_ENV['YII_DEBUG'],
             checkEvents: false,
             environment: $_ENV['YII_ENV'] ?? null,
         );
