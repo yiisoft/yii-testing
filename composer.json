@@ -3,7 +3,8 @@
     "type": "library",
     "description": "yii-testing",
     "keywords": [
-        "yii3", "testing"
+        "yii3",
+        "testing"
     ],
     "homepage": "https://www.yiiframework.com/",
     "license": "BSD-3-Clause",
@@ -11,7 +12,7 @@
         "issues": "https://github.com/yiisoft/yii-testing/issues?state=open",
         "forum": "https://www.yiiframework.com/forum/",
         "wiki": "https://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
+        "irc": "ircs://irc.libera.chat:6697/yii",
         "chat": "https://t.me/yii3en",
         "source": "https://github.com/yiisoft/yii-testing"
     },
