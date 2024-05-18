@@ -34,6 +34,6 @@ abstract class FunctionalTestCase extends TestCase
 
     protected function getContainer(): ContainerInterface
     {
-        return $this->tester?->getContainer()?? throw new Exception('Either $tester or $container is null');
+        return $this->tester?->getContainer() ?? throw new Exception('Either $tester or $container is null');
     }
 }
