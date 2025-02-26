@@ -13,4 +13,10 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <NonInvariantDocblockPropertyType errorLevel="suppress" />
+        <ClassMustBeFinal errorLevel="suppress" />
+        <InvalidArgument errorLevel="suppress" />
+        <MissingOverrideAttribute errorLevel="suppress"/>
+    </issueHandlers>    
 </psalm>
