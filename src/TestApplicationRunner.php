@@ -17,12 +17,12 @@ use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Yii\Http\Application;
 use Yiisoft\Yii\Http\Handler\ThrowableHandler;
 use Yiisoft\Yii\Runner\ApplicationRunner;
-use Yiisoft\Yii\Runner\Http\ServerRequestFactory;
+use Yiisoft\Yii\Runner\Http\RequestFactory;
 
 final class TestApplicationRunner extends ApplicationRunner
 {
-    private array $requestParameters = [];
     public ?ContainerInterface $container = null;
+    private array $requestParameters = [];
     /**
      * @var ServiceProviderInterface[]
      */
@@ -105,7 +105,7 @@ final class TestApplicationRunner extends ApplicationRunner
          * @psalm-suppress MixedMethodCall
          */
         $serverRequest = $container
-            ->get(ServerRequestFactory::class)
+            ->get(RequestFactory::class)
             ->createFromParameters(
                 ...$this->requestParameters,
             );
