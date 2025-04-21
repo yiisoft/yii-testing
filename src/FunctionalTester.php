@@ -45,11 +45,17 @@ final class FunctionalTester
         $this->application->addProviders([$this->getMockServiceProvider()]);
     }
 
-    public function doRequest(string $method, string $url): ResponseAccessor
-    {
+    public function doRequest(
+        string $method,
+        string $url,
+        array $queryParams = [],
+        array $postParams = [],
+        mixed $body = null,
+        array $headers = [],
+    ): ResponseAccessor {
         $this->ensureApplicationLoaded();
 
-        $this->application?->withRequest($method, $url);
+        $this->application?->withRequest($method, $url, $queryParams, $postParams, $body, $headers);
         $this->application?->run();
 
         return $this->application?->responseGrabber?->getResponse() ?? throw new RuntimeException(
