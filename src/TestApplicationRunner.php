@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Testing;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 use Yiisoft\Config\ConfigInterface;
@@ -17,7 +18,6 @@ use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Yii\Http\Application;
 use Yiisoft\Yii\Http\Handler\ThrowableHandler;
 use Yiisoft\Yii\Runner\ApplicationRunner;
-use Yiisoft\Yii\Runner\Http\RequestFactory;
 
 final class TestApplicationRunner extends ApplicationRunner
 {
@@ -105,9 +105,10 @@ final class TestApplicationRunner extends ApplicationRunner
          * @psalm-suppress MixedMethodCall
          */
         $serverRequest = $container
-            ->get(RequestFactory::class)
-            ->createFromParameters(
-                ...$this->requestParameters,
+            ->get(ServerRequestFactoryInterface::class)
+            ->createServerRequest(
+                $this->requestParameters['server']['REQUEST_METHOD'],
+                $this->requestParameters['server']['REQUEST_URI'],
             );
 
         /**
