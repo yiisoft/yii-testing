@@ -14,7 +14,7 @@ final class FunctionalTester
     private ?MockServiceProvider $mockServiceProvider = null;
 
     public function __construct(
-        private array $defaultMocks = [
+        private readonly array $defaultMocks = [
             'Yiisoft\Session\SessionInterface' => 'Yiisoft\Session\NullSession',
         ]
     ) {
