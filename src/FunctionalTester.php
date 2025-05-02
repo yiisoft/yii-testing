@@ -14,6 +14,8 @@ final class FunctionalTester
     private ?MockServiceProvider $mockServiceProvider = null;
 
     public function __construct(
+        private readonly ?string $environment = null,
+        private readonly bool $debug = false,
         private readonly array $defaultMocks = [
             'Yiisoft\Session\SessionInterface' => 'Yiisoft\Session\NullSession',
         ]
@@ -38,9 +40,9 @@ final class FunctionalTester
         $this->application = new TestApplicationRunner(
             responseGrabber: new ResponseGrabber(),
             rootPath: $projectRootPath,
-            debug: (bool)$_ENV['YII_DEBUG'],
+            debug: $this->debug,
             checkEvents: false,
-            environment: $_ENV['YII_ENV'] ?? null,
+            environment: $this->environment,
         );
         $this->application->addProviders([$this->getMockServiceProvider()]);
     }
