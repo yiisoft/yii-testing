@@ -109,7 +109,22 @@ final class TestApplicationRunner extends ApplicationRunner
             ->createServerRequest(
                 $this->requestParameters['server']['REQUEST_METHOD'],
                 $this->requestParameters['server']['REQUEST_URI'],
-            );
+            )
+            ->withQueryParams($this->requestParameters['get'] ?? [])
+            ->withParsedBody($this->requestParameters['post'] ?? [])
+            ->withCookieParams($this->requestParameters['cookies'] ?? [])
+            ->withUploadedFiles($this->requestParameters['files'] ?? []);
+
+        if (!empty($this->requestParameters['headers'])) {
+            foreach ($this->requestParameters['headers'] as $name => $value) {
+                $serverRequest = $serverRequest->withHeader($name, $value);
+            }
+        }
+
+        if (!empty($this->requestParameters['body'])) {
+            $serverRequest->getBody()->write((string) $this->requestParameters['body']);
+            $serverRequest->getBody()->rewind();
+        }
 
         /**
          * @var ResponseInterface|null $response
