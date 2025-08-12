@@ -14,12 +14,12 @@ class ResponseGrabberTest extends TestCase
 {
     public function testGetResponseWillReturnResponseAccessorSetResponse(): void
     {
-        $responseStub = new Response(200, body: '{"key": "value"}', reason: 'Ok with body', version: '1.1');
+        $response = new Response(200, body: '{"key": "value"}', reason: 'Ok with body', version: '1.1');
 
         $responseGrabber = new ResponseGrabber();
-        $responseGrabber->setResponse($responseStub);
+        $responseGrabber->setResponse($response);
 
-        $this->assertEquals(new ResponseAccessor($responseStub), $responseGrabber->getResponse());
+        $this->assertEquals(new ResponseAccessor($response), $responseGrabber->getResponse());
     }
 
     public function testGetResponseWillThrowExceptionIfSetResponseIsCalledWithNullParameter(): void
