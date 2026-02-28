@@ -1,6 +1,6 @@
 on:
   pull_request:
-    paths-ignore:
+    paths-ignore: &paths
       - 'docs/**'
       - 'README.md'
       - 'CHANGELOG.md'
@@ -9,13 +9,10 @@ on:
       - 'psalm.xml'
 
   push:
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'psalm.xml'
+    paths-ignore: *paths
+
+permissions:
+  contents: read
 
 name: mutation test
 
@@ -27,6 +24,6 @@ jobs:
       os: >-
         ['ubuntu-latest']
       php: >-
-        [8.1, 8.2, 8.3, 8.4]
+        [8.5]
     secrets:
       STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
