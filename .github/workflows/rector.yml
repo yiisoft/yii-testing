@@ -9,6 +9,9 @@ on:
       - 'infection.json.dist'
       - 'psalm.xml'
 
+permissions:
+  contents: read
+
 name: rector
 
 jobs:
@@ -21,4 +24,4 @@ jobs:
       os: >-
         ['ubuntu-latest']
       php: >-
-        ['8.4']
+        ['8.5']
