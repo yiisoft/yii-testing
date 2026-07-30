@@ -7,11 +7,13 @@ namespace Yiisoft\Yii\Testing;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
+use const JSON_OBJECT_AS_ARRAY;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_UNICODE;
+
 final class ResponseAccessor implements ResponseInterface
 {
-    public function __construct(private ResponseInterface $response)
-    {
-    }
+    public function __construct(private ResponseInterface $response) {}
 
     public function getContent(): string
     {
@@ -21,7 +23,7 @@ final class ResponseAccessor implements ResponseInterface
     }
 
     public function getContentAsJson(
-        int $flags = JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE
+        int $flags = JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE,
     ): mixed {
         return json_decode($this->getContent(), flags: $flags);
     }
@@ -37,7 +39,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withProtocolVersion($version): self
     {
         return $this->withResponse(
-            $this->response->withProtocolVersion($version)
+            $this->response->withProtocolVersion($version),
         );
     }
 
@@ -68,7 +70,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withHeader($name, $value): self
     {
         return $this->withResponse(
-            $this->response->withHeader($name, $value)
+            $this->response->withHeader($name, $value),
         );
     }
 
@@ -79,7 +81,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withAddedHeader($name, $value): self
     {
         return $this->withResponse(
-            $this->response->withAddedHeader($name, $value)
+            $this->response->withAddedHeader($name, $value),
         );
     }
 
@@ -89,7 +91,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withoutHeader($name): self
     {
         return $this->withResponse(
-            $this->response->withoutHeader($name)
+            $this->response->withoutHeader($name),
         );
     }
 
@@ -104,7 +106,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withBody(StreamInterface $body): self
     {
         return $this->withResponse(
-            $this->response->withBody($body)
+            $this->response->withBody($body),
         );
     }
 
@@ -120,7 +122,7 @@ final class ResponseAccessor implements ResponseInterface
     public function withStatus($code, $reasonPhrase = ''): self
     {
         return $this->withResponse(
-            $this->response->withStatus($code, $reasonPhrase)
+            $this->response->withStatus($code, $reasonPhrase),
         );
     }
 

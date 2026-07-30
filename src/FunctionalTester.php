@@ -8,6 +8,8 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
+use function dirname;
+
 final class FunctionalTester
 {
     private ?TestApplicationRunner $application = null;
@@ -18,9 +20,8 @@ final class FunctionalTester
         private readonly bool $debug = false,
         private readonly array $defaultMocks = [
             'Yiisoft\Session\SessionInterface' => 'Yiisoft\Session\NullSession',
-        ]
-    ) {
-    }
+        ],
+    ) {}
 
     public function mockService(string $id, mixed $definition): void
     {
@@ -61,7 +62,7 @@ final class FunctionalTester
         $this->application?->run();
 
         return $this->application?->responseGrabber?->getResponse() ?? throw new RuntimeException(
-            'Either $application or $response is null'
+            'Either $application or $response is null',
         );
     }
 
@@ -81,7 +82,7 @@ final class FunctionalTester
     {
         if ($this->application === null) {
             throw new RuntimeException(
-                'The application was not initialized. Initialize the application before the request: `$this->bootstrapApplication(\'web\')`.'
+                'The application was not initialized. Initialize the application before the request: `$this->bootstrapApplication(\'web\')`.',
             );
         }
     }
