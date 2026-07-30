@@ -221,7 +221,7 @@ final class TestApplicationRunner extends ApplicationRunner
         }
 
         $containerConfig = $containerConfig->withDefinitions(
-            array_merge($containerConfig->getDefinitions(), [ConfigInterface::class => $config])
+            array_merge($containerConfig->getDefinitions(), [ConfigInterface::class => $config]),
         );
 
         return new Container($containerConfig);

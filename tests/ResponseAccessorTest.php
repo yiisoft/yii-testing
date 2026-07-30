@@ -8,6 +8,7 @@ use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use Yiisoft\Yii\Testing\ResponseAccessor;
+use Nyholm\Psr7\Stream;
 
 class ResponseAccessorTest extends TestCase
 {
@@ -126,7 +127,7 @@ class ResponseAccessorTest extends TestCase
     {
         [$response, $accessor] = $this->createResponseAndAccessor();
 
-        $newAccessor = $accessor->withBody(\Nyholm\Psr7\Stream::create('{"key2": "value2"}'));
+        $newAccessor = $accessor->withBody(Stream::create('{"key2": "value2"}'));
 
         $this->assertNotSame($accessor, $newAccessor);
         $this->assertNotSame($response, $newAccessor->getResponse());
