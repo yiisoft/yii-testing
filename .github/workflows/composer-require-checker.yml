@@ -1,22 +1,22 @@
+name: Composer require checker
+
 on:
   pull_request:
-    paths-ignore: &paths
-      - 'docs/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'infection.json.dist'
-      - 'phpunit.xml.dist'
-      - 'psalm.xml'
-
+    paths: &paths
+      - 'src/**'
+      - 'tests/**'
+      - 'composer.json'
+      - '.github/workflows/composer-require-checker.yml'
   push:
-    paths-ignore: *paths
+    branches: ['master']
+    paths: *paths
 
 permissions:
   contents: read
 
-name: Composer require checker
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   composer-require-checker:
