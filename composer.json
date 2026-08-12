@@ -38,9 +38,7 @@
         "yiisoft/di": "^1.1",
         "yiisoft/error-handler": "^4.0",
         "yiisoft/yii-http": "^1.0",
-        "yiisoft/yii-runner": "^2.0",
-        "yiisoft/yii-runner-console": "^2.0",
-        "yiisoft/yii-runner-http": "^3.0"
+        "yiisoft/yii-runner": "^2.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
