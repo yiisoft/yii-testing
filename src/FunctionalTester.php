@@ -34,9 +34,7 @@ final class FunctionalTester
             return;
         }
 
-        if ($projectRootPath === null) {
-            $projectRootPath = dirname(__DIR__, 5);
-        }
+        $projectRootPath ??= dirname(__DIR__, 5);
 
         $this->application = new TestApplicationRunner(
             responseGrabber: new ResponseGrabber(),
